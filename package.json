@@ -1,0 +1,30 @@
+{
+  "name": "speedcube-time-api",
+  "version": "1.0.0",
+  "description": "Este projeto é uma API REST para fãs de cubo mágico, onde os usuários podem registrar seus tempos. Objetivo é que o usuário possa acompanhar sua evolução no tempo visto que terá o histórico do tempo para montar o cubo e também para comparar com outros usuários e até entrar no ranking dos mais rápidos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephaniknupp/speedcube-time-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stephaniknupp/speedcube-time-api/issues"
+  },
+  "homepage": "https://github.com/stephaniknupp/speedcube-time-api#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^7.0.2"
+  }
+}
