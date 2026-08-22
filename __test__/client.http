@@ -1,0 +1,7 @@
+POST http://localhost:3000/solves
+Content-Type: application/json
+
+{
+    "time": 8.30
+}
+###
