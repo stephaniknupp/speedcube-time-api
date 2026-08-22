@@ -19,4 +19,12 @@ export class SolveService {
     async findById(id: string): Promise<Solve | undefined> {
         return await this.solveRepository.findById(id);
     }
+
+    async update(id: string, time: number): Promise<Solve | undefined> {
+        return await this.solveRepository.update(id, time);
+    }
+
+    async delete(id: string): Promise<Solve | undefined> {
+    return await this.solveRepository.delete(id);
+    }
 }

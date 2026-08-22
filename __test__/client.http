@@ -6,13 +6,22 @@ Content-Type: application/json
 }
 ###
 
-
 GET http://localhost:3000/solves
 Content-Type: application/json
 ###
 
+GET http://localhost:3000/solves/solve_id
+Content-Type: application/json
+###
 
+PUT http://localhost:3000/solves/solve_id
+Content-Type: application/json
 
-GET http://localhost:3000/solves/d94ca470-66af-4ebb-9f47-e84749749da
+{
+    "time": 7.85
+}
+###
+
+DELETE http://localhost:3000/solves/solve_id
 Content-Type: application/json
 ###

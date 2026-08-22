@@ -48,4 +48,50 @@ export class SolveController {
 
         return res.status(200).json(solve);
     }
+
+    async update(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+            message: "ID inválido"
+        });
+    }
+
+    if (!isISolveDTO(req.body)) {
+        return res.status(400).json({
+            message: "Dados inválidos"
+        });
+    }
+
+    const solve = await this.solveService.update(id, req.body.time);
+
+    if (!solve) {
+        return res.status(404).json({
+            message: "Solve não encontrado"
+        });
+    }
+
+    return res.status(200).json(solve);
+    }
+
+    async delete(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+            message: "ID inválido"
+        });
+    }
+
+    const solve = await this.solveService.delete(id);
+
+    if (!solve) {
+        return res.status(404).json({
+            message: "Solve não encontrado"
+        });
+    }
+
+    return res.status(200).json(solve);
+    }
 }

@@ -31,4 +31,8 @@ export class Solve {
     get createdAt(): Date {
         return this._createdAt;
     }
+
+    updateTime(time: number): void {
+    this._time = time;
+    }
 }

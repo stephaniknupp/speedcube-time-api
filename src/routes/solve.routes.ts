@@ -16,4 +16,8 @@ router.get("/solves", (req, res) => solveController.findAll(req, res));
 
 router.get("/solves/:id", (req, res) => solveController.findById(req, res));
 
+router.put("/solves/:id", (req, res) => solveController.update(req, res));
+
+router.delete("/solves/:id", (req, res) => solveController.delete(req, res));
+
 export default router;
