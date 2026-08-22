@@ -15,4 +15,8 @@ export class SolveService {
     async findAll(): Promise<Solve[]> {
         return await this.solveRepository.findAll();
     }
+
+    async findById(id: string): Promise<Solve | undefined> {
+        return await this.solveRepository.findById(id);
+    }
 }

@@ -12,4 +12,8 @@ const solveController = new SolveController(solveService);
 
 router.post("/solves", (req, res) => solveController.create(req, res));
 
+router.get("/solves", (req, res) => solveController.findAll(req, res));
+
+router.get("/solves/:id", (req, res) => solveController.findById(req, res));
+
 export default router;

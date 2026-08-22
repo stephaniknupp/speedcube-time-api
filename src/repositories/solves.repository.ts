@@ -15,4 +15,9 @@ export class SolveRepository {
     async findAll(): Promise<Solve[]> {
         return this.solves;
     }
+
+
+    async findById(id: string): Promise<Solve | undefined> {
+        return this.solves.find((solve) => solve.id === id);
+    }
 }

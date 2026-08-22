@@ -5,3 +5,14 @@ Content-Type: application/json
     "time": 8.30
 }
 ###
+
+
+GET http://localhost:3000/solves
+Content-Type: application/json
+###
+
+
+
+GET http://localhost:3000/solves/d94ca470-66af-4ebb-9f47-e84749749da
+Content-Type: application/json
+###
