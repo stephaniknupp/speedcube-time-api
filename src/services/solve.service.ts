@@ -1,30 +1,30 @@
+import SolveRepository from "../repositories/solves.repository";
 import { Solve } from "../models/solve";
-import { SolveRepository } from "../repositories/solves.repository";
 
-export class SolveService {
-    private solveRepository: SolveRepository;
+export default class SolveService {
+    constructor(private repository: SolveRepository) {}
 
-    constructor(solveRepository: SolveRepository) {
-        this.solveRepository = solveRepository;
+    async create(solve: Solve): Promise<string> {
+        return await this.repository.insert(solve);
     }
 
-    async create(solve: Solve): Promise<Solve> {
-        return await this.solveRepository.create(solve);
+    async findById(id: string): Promise<Solve | null> {
+        return await this.repository.getById(id);
     }
 
     async findAll(): Promise<Solve[]> {
-        return await this.solveRepository.findAll();
+        return await this.repository.getAll();
     }
 
-    async findById(id: string): Promise<Solve | undefined> {
-        return await this.solveRepository.findById(id);
+    async update(id: string, time: number): Promise<boolean> {
+        return await this.repository.update(id, time);
     }
 
-    async update(id: string, time: number): Promise<Solve | undefined> {
-        return await this.solveRepository.update(id, time);
+    async delete(id: string): Promise<boolean> {
+        return await this.repository.delete(id);
     }
 
-    async delete(id: string): Promise<Solve | undefined> {
-    return await this.solveRepository.delete(id);
+    async findByUserId(userId: string): Promise<Solve[]> {
+    return await this.repository.getByUserId(userId);
     }
 }

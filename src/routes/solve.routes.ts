@@ -1,23 +1,25 @@
-import { Router } from "express";
-import { SolveController } from "../controllers/solve.controller";
-import { SolveService } from "../services/solve.service";
-import { SolveRepository } from "../repositories/solves.repository";
+import express from "express";
 
-const router = Router();
+import {
+    createSolve,
+    getSolveById,
+    getAllSolves,
+    updateSolve,
+    deleteSolve
+} from "../controllers/solve.controller";
 
-const solveRepository = new SolveRepository();
-const solveService = new SolveService(solveRepository);
-const solveController = new SolveController(solveService);
+import { requireAuth } from "../middlewares/auth.middleware";
 
+const router = express.Router();
 
-router.post("/solves", (req, res) => solveController.create(req, res));
+router.post("/solves", requireAuth, createSolve);
 
-router.get("/solves", (req, res) => solveController.findAll(req, res));
+router.get("/solves", requireAuth, getAllSolves);
 
-router.get("/solves/:id", (req, res) => solveController.findById(req, res));
+router.get("/solves/:id", requireAuth, getSolveById);
 
-router.put("/solves/:id", (req, res) => solveController.update(req, res));
+router.put("/solves/:id", requireAuth, updateSolve);
 
-router.delete("/solves/:id", (req, res) => solveController.delete(req, res));
+router.delete("/solves/:id", requireAuth, deleteSolve);
 
 export default router;

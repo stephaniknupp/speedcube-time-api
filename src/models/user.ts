@@ -45,4 +45,14 @@ export class User {
     get role(): string {
         return this._role;
     }
+
+    updateData(
+    name: string,
+    username: string,
+    email: string
+    ): void {
+    this._name = name;
+    this._username = username;
+    this._email = email;
+}
 }

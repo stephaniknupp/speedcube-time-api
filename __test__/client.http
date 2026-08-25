@@ -1,5 +1,6 @@
 POST http://localhost:3000/solves
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4M2MxNmViYi1lN2M5LTRlMjktOTUxZC0wYTZmOTViYWU3NzIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4NzYxODg0NCwiZXhwIjoxNzg3NjIyNDQ0fQ.18GCHlrygOZQymstx2BRkBHNyNwvbOVHNw84aIsGE7Q
 
 {
     "time": 8.30
@@ -8,6 +9,7 @@ Content-Type: application/json
 
 GET http://localhost:3000/solves
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4M2MxNmViYi1lN2M5LTRlMjktOTUxZC0wYTZmOTViYWU3NzIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc4NzYxODg0NCwiZXhwIjoxNzg3NjIyNDQ0fQ.18GCHlrygOZQymstx2BRkBHNyNwvbOVHNw84aIsGE7Q
 ###
 
 GET http://localhost:3000/solves/solve_id
@@ -24,4 +26,58 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/solves/solve_id
 Content-Type: application/json
+###
+
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "stephani",
+    "username": "stephaniknupp",
+    "email": "stephaniknupp@email.com",
+    "password": "1234"
+}
+###
+
+GET http://localhost:3000/users
+Content-Type: application/json
+###
+
+GET http://localhost:3000/users/user_id
+Content-Type: application/json
+###
+
+PUT http://localhost:3000/users/user_id
+Content-Type: application/json
+
+{
+    "name": "fernanda",
+    "username": "stephaniknupp",
+    "email": "stephaniknupp@email.com",
+    "password": "1234"
+}
+###
+
+DELETE http://localhost:3000/users/user_id
+Content-Type: application/json
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "name": "stephani",
+    "username": "stephaniknupp",
+    "email": "stephaniknupp@email.com",
+    "password": "1234"
+}
+###
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "admin@email.com",
+    "password": "123456"
+}
 ###

@@ -1,23 +1,77 @@
 import { User } from "../models/user";
 
-export class UserRepository {
-    private users: User[] = [];
+export default abstract class UserRepository {
+    abstract insert(user: User): Promise<string>;
+    abstract getById(id: string): Promise<User | null>;
+    abstract getByEmail(email: string): Promise<User | null>;
+    abstract getAll(): Promise<User[]>;
+    abstract update(
+        id: string,
+        name: string,
+        username: string,
+        email: string
+    ): Promise<boolean>;
+    abstract delete(id: string): Promise<boolean>;
+}
 
-    async create(user: User): Promise<User> {
-        this.users.push(user);
+export class UserRepositoryMemory extends UserRepository {
+    users: User[] = [];
 
-        return user;
+     constructor() {
+        super();
+
+        this.users.push(
+            new User(
+                "admin-id",
+                "Administrador",
+                "admin",
+                "admin@email.com",
+                "$2b$10$esTul4lnTupYiZRA7HT58O8vy7HDwlHlLP8Sf/5EnrodYJOo/rGZO",
+                "admin"
+            )
+        );
     }
 
-    async findAll(): Promise<User[]> {
+    async insert(user: User): Promise<string> {
+        this.users.push(user);
+
+        return user.id;
+    }
+
+    async getById(id: string): Promise<User | null> {
+        return this.users.find(user => user.id === id) ?? null;
+    }
+
+    async getByEmail(email: string): Promise<User | null> {
+        return this.users.find(user => user.email === email) ?? null;
+    }
+
+    async getAll(): Promise<User[]> {
         return this.users;
     }
 
-    async findByEmail(email: string): Promise<User | undefined> {
-        return this.users.find((user) => user.email === email);
+    async update(
+        id: string,
+        name: string,
+        username: string,
+        email: string
+    ): Promise<boolean> {
+        const user = this.users.find(user => user.id === id);
+
+        if (!user) return false;
+
+        user.updateData(name, username, email);
+
+        return true;
     }
 
-    async findById(id: string): Promise<User | undefined> {
-        return this.users.find((user) => user.id === id);
+    async delete(id: string): Promise<boolean> {
+        const index = this.users.findIndex(user => user.id === id);
+
+        if (index === -1) return false;
+
+        this.users.splice(index, 1);
+
+        return true;
     }
 }

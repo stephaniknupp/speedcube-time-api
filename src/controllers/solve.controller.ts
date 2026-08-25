@@ -1,97 +1,152 @@
 import { Request, Response } from "express";
-import { Solve } from "../models/solve";
-import { SolveService } from "../services/solve.service";
+import { AuthRequest } from "../middlewares/auth.middleware";
+
 import { isISolveDTO } from "../dtos/solve.dto";
 
-export class SolveController {
-    constructor(private solveService: SolveService) {}
+import { Solve } from "../models/solve";
 
-    async create(req: Request, res: Response): Promise<Response> {
-        if (!isISolveDTO(req.body)) {
-            return res.status(400).json({
-                message: "Dados inválidos"
-            });
-        }
+import SolveService from "../services/solve.service";
+import { solveRepository } from "../repositories";
 
-        const solve = new Solve(
-            crypto.randomUUID(),
-            "user-id-temporario",
-            req.body.time,
-            new Date()
-        );
 
-        const createdSolve = await this.solveService.create(solve);
+const service = new SolveService(solveRepository);
 
-        return res.status(201).json(createdSolve);
+export const createSolve = async (
+    req: AuthRequest,
+    res: Response
+): Promise<void> => {
+    const solve: unknown = req.body;
+
+    if (!isISolveDTO(solve)) {
+        res.status(400).json({
+            error: "Informe os dados obrigatórios do solve."
+        });
+
+        return;
     }
 
-    async findAll(req: Request, res: Response): Promise<Response> {
-        const solves = await this.solveService.findAll();
+    const newSolve = new Solve(
+        crypto.randomUUID(),
+        req.userId!,
+        solve.time,
+        new Date()
+    );
 
-        return res.status(200).json(solves);
-    }
+    const id = await service.create(newSolve);
 
-    async findById(req: Request, res: Response): Promise<Response> {
-        const { id } = req.params;
-        
-        if (!id || Array.isArray(id)) {
-            return res.status(400).json({ message: "ID inválido" });
-        }
+    res.status(201).json({
+        id
+    });
+};
 
-        const solve = await this.solveService.findById(id);
-
-        if (!solve) {
-            return res.status(404).json({
-                message: "Solve não encontrado"
-            });
-        }
-
-        return res.status(200).json(solve);
-    }
-
-    async update(req: Request, res: Response): Promise<Response> {
+export const getSolveById = async (
+    req: AuthRequest,
+    res: Response
+): Promise<void> => {
     const { id } = req.params;
 
     if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-            message: "ID inválido"
+        res.status(400).json({
+            error: "ID inválido."
         });
+
+        return;
     }
 
-    if (!isISolveDTO(req.body)) {
-        return res.status(400).json({
-            message: "Dados inválidos"
-        });
-    }
-
-    const solve = await this.solveService.update(id, req.body.time);
+    const solve = await service.findById(id);
 
     if (!solve) {
-        return res.status(404).json({
-            message: "Solve não encontrado"
-        });
-    }
+    res.status(404).json({
+        error: "Solve não encontrado."
+    });
 
-    return res.status(200).json(solve);
-    }
-
-    async delete(req: Request, res: Response): Promise<Response> {
-    const { id } = req.params;
-
-    if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-            message: "ID inválido"
-        });
-    }
-
-    const solve = await this.solveService.delete(id);
-
-    if (!solve) {
-        return res.status(404).json({
-            message: "Solve não encontrado"
-        });
-    }
-
-    return res.status(200).json(solve);
-    }
+    return;
 }
+
+if (solve.userId !== req.userId) {
+    res.status(403).json({
+        error: "Você não pode acessar este solve."
+    });
+
+    return;
+}
+
+    
+};
+
+export const getAllSolves = async (
+    req: AuthRequest,
+    res: Response
+): Promise<void> => {
+    const solves = await service.findByUserId(req.userId!);
+
+    res.status(200).json(solves);
+};
+
+export const updateSolve = async (
+    req: AuthRequest,
+    res: Response
+): Promise<void> => {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+        res.status(400).json({
+            error: "ID inválido."
+        });
+
+        return;
+    }
+
+    const solve: unknown = req.body;
+
+    if (!isISolveDTO(solve)) {
+        res.status(400).json({
+            error: "Informe os dados obrigatórios do solve."
+        });
+
+        return;
+    }
+
+    const updated = await service.update(id, solve.time);
+
+    if (!updated) {
+        res.status(404).json({
+            error: "Solve não encontrado."
+        });
+
+        return;
+    }
+
+    res.status(200).json({
+        message: "Solve atualizado com sucesso."
+    });
+};
+
+export const deleteSolve = async (
+    req: AuthRequest,
+    res: Response
+): Promise<void> => {
+    const { id } = req.params;
+
+    if (!id || Array.isArray(id)) {
+        res.status(400).json({
+            error: "ID inválido."
+        });
+
+        return;
+    }
+
+    const deleted = await service.delete(id);
+
+    if (!deleted) {
+        res.status(404).json({
+            error: "Solve não encontrado."
+        });
+
+        return;
+    }
+
+    res.status(200).json({
+        message: "Solve deletado com sucesso."
+    });
+};
